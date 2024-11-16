@@ -24,12 +24,14 @@ if index and name and sex and submit:
  "sex": sex
  })
  st.sidebar.write("Registro insertado correctamente")
- def loadByName(name):
+ 
+def loadByName(name):
     names_ref = dbNames.where(u'name', u'==', name)
     currentName = None
     for myname in names_ref.stream():
         currentName = myname
-    return currentName
+        return currentName
+
 st.sidebar.subheader("Buscar nombre")
 nameSearch = st.sidebar.text_input("nombre")
 btnFiltrar = st.sidebar.button("Buscar")
@@ -54,6 +56,7 @@ if btnEliminar:
 st.sidebar.markdown("""---""")
 newname = st.sidebar.text_input("Actualizar nombre")
 btnActualizar = st.sidebar.button("Actualizar")
+
 if btnActualizar:
     updatename = loadByName(nameSearch)
     if updatename is None:
@@ -61,9 +64,9 @@ if btnActualizar:
     else:
         myupdatename = dbNames.document(updatename.id)
         myupdatename.update(
-        {
-        "name": newname
-        }
+            {
+                "name": newname
+            }
         )
 names_ref = list(db.collection(u'names').stream())
 names_dict = list(map(lambda x: x.to_dict(), names_ref))
